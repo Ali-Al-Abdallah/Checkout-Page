@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout Page</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="checkout-container">
+
+        <!-- LEFT COLUMN: Customer Info, Delivery, & Payment -->
+        <div class="checkout-col left-col">
+            <form id="checkout-form">
+                <h2>Customer Information</h2>
+
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name">
+                    <small class="error-msg" id="name-error"></small>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email">
+                    <small class="error-msg" id="email-error"></small>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Phone</label>
+                    <input type="tel" id="phone">
+                    <small class="error-msg" id="phone-error"></small>
+                </div>
+
+                <div class="form-group">
+                    <label for="address">Delivery Address</label>
+                    <input type="text" id="address">
+                    <small class="error-msg" id="address-error"></small>
+                </div>
+
+                <!--Delivery options-->
+                <h2 class="section-title">Delivery Options</h2>
+                <div class="form-group radio-group">
+                    <label class="radio-label">
+                        <input type="radio" name="delivery" value="5" checked> Standard Shipping ($5.00)
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="delivery" value="10"> Express Shipping ($10.00)
+                    </label>
+                </div>
+
+                <!--payment method-->
+                <h2 class="section-title">Payment Method</h2>
+                <div class="payment-methods">
+                    <button type="button" class="pay-btn active" data-method="cod">Cash on Delivery</button>
+                    <button type="button" class="pay-btn" data-method="card">Credit/Debit Card</button>
+                </div>
+
+                <!-- Hidden Credit Card Details Container -->
+                <div id="card-details-container" class="card-details-container" style="display: none; margin-top: 15px;">
+                    <div class="form-group">
+                        <label for="card-number">Card Number (Simulation)</label>
+                        <input type="text" id="card-number" placeholder="1234 5678 9012 3456">
+                        <small class="error-msg" id="card-number-error"></small>
+                    </div>
+                    <div class="form-row" style="display: flex; gap: 10px;">
+                        <div class="form-group" style="flex: 1;">
+                            <label for="card-expiry">Expiry Date</label>
+                            <input type="text" id="card-expiry" placeholder="MM/YY">
+                            <small class="error-msg" id="card-expiry-error"></small>
+                        </div>
+                        <div class="form-group" style="flex: 1;">
+                            <label for="card-cvv">CVV</label>
+                            <input type="text" id="card-cvv" placeholder="123">
+                            <small class="error-msg" id="card-cvv-error"></small>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- RIGHT COLUMN: Order Summary, Promo, Calculations, Place Order -->
+        <div class="checkout-col right-col">
+            <h2>Order Summary</h2>
+
+            <div id="product-list" class="product-list">
+                <!-- Injected via JavaScript -->
+            </div>
+
+            <h2 class="section-title">Promo Code</h2>
+            <div class="promo-box">
+                <input type="text" id="promo-input" placeholder="Promo code">
+                <button type="button" id="apply-btn" class="apply-btn">Apply</button>
+            </div>
+            <small class="error-msg" id="promo-msg" style="display: block; margin-top: 5px;"></small>
+            <div class="summary-row" id="discount-row" style="display: none;">
+                <span>Discount (10%)</span>
+                <span id="discount-amount">-$0.00</span>
+            </div>
+
+            <h2 class="section-title">Price Calculations</h2>
+            <div class="summary-details">
+                <div class="summary-row">
+                    <span>Total Items</span>
+                    <span id="total-items">0</span>
+                </div>
+                <div class="summary-row">
+                    <span>Subtotal</span>
+                    <span id="subtotal">$0.00</span>
+                </div>
+                <div class="summary-row">
+                    <span>Delivery</span>
+                    <span id="delivery-cost">$5.00</span>
+                </div>
+                <div class="summary-row total-highlight">
+                    <span>Total</span>
+                    <span id="grand-total">$0.00</span>
+                </div>
+            </div>
+
+            <button type="submit" form="checkout-form" class="place-order-btn">Place Order</button>
+        </div>
+    </div>
+
+    <!-- Order Confirmation Screen -->
+    <div id="confirmation-container" class="confirmation-container" style="display: none; max-width: 550px; margin: 40px auto; padding: 40px; background: #f0fdf4; border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.08); text-align: left; font-family: inherit;">
+
+        <!-- Header Banner -->
+        <div style="text-align: center; margin-bottom: 25px; border-bottom: 2px solid #f0f0f0; padding-bottom: 20px;">
+            <div style="font-size: 42px; margin-bottom: 10px;">🎉</div>
+            <h2 style="color: #2e7d32; margin: 0 0 8px 0; font-size: 24px;">Order Placed Successfully!</h2>
+            <p style="color: #666; margin: 0; font-size: 14px;">Thank you for your purchase. We've received your order.</p>
+        </div>
+
+        <!-- Meta Info Card -->
+        <div style="background: #f8fafc; border: 1px solid #e2e8f0; padding: 16px; border-radius: 8px; margin-bottom: 25px; font-size: 14px;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                <span style="color: #64748b;">Order Number:</span>
+                <span id="conf-order-id" style="color: #2563eb; font-weight: 600;"></span>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                <span style="color: #64748b;">Date:</span>
+                <span id="conf-date" style="color: #1e293b; font-weight: 500;"></span>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+                <span style="color: #64748b;">Payment Method:</span>
+                <span id="conf-payment" style="color: #1e293b; font-weight: 500;"></span>
+            </div>
+        </div>
+
+        <!-- Customer & Delivery Details Section -->
+        <div style="margin-bottom: 25px;">
+            <h3 style="font-size: 15px; color: #334155; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid #e2e8f0; padding-bottom: 6px; margin-bottom: 12px;">Customer & Delivery Details</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 14px; color: #334155;">
+                <div><span style="color: #64748b;">Name:</span> <strong id="conf-name"></strong></div>
+                <div><span style="color: #64748b;">Phone:</span> <strong id="conf-phone"></strong></div>
+                <div style="grid-column: span 2;"><span style="color: #64748b;">Email:</span> <strong id="conf-email"></strong></div>
+                <div style="grid-column: span 2;"><span style="color: #64748b;">Delivery Address:</span> <strong id="conf-address"></strong></div>
+            </div>
+        </div>
+
+        <!-- Order Summary Section -->
+        <div style="margin-bottom: 25px;">
+            <h3 style="font-size: 15px; color: #334155; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid #e2e8f0; padding-bottom: 6px; margin-bottom: 12px;">Order Summary</h3>
+            <div id="conf-product-list" style="font-size: 14px; color: #334155;">
+                <!-- Injected via JS -->
+            </div>
+        </div>
+
+        <!-- Total Row -->
+        <div style="display: flex; justify-content: space-between; align-items: center; background: #f1f5f9; padding: 14px 16px; border-radius: 8px; font-size: 1.1em; font-weight: bold; color: #0f172a; margin-bottom: 25px;">
+            <span>Total Paid:</span>
+            <span id="conf-grand-total" style="color: #2563eb;"></span>
+        </div>
+
+        <!-- Action Button -->
+        <button type="button" onclick="location.reload();" style="display: block; width: 100%; padding: 14px; background: #2563eb; color: white; border: none; border-radius: 8px; font-size: 1em; font-weight: 600; cursor: pointer; transition: background 0.2s;">Place Another Order</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
